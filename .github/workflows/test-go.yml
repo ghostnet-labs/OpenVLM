@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -35,7 +35,7 @@ jobs:
           version: v2.11.4
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, ARM64]
     needs: lint
     steps:
       - name: Checkout code
@@ -46,8 +46,9 @@ jobs:
         with:
           go-version-file: "go.mod"
 
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install -y build-essential pkg-config libhidapi-dev libusb-1.0-0-dev libudev-dev
+      - name: Check build dependencies are installed
+        # Preinstalled in the Mac Studio's Ubuntu VM: its runner user has no sudo.
+        run: dpkg-query -W build-essential pkg-config libhidapi-dev libusb-1.0-0-dev libudev-dev >/dev/null
 
       - name: Run tests
         run: make test
