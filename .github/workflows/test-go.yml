@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   lint:
-    runs-on: [self-hosted, Linux, ARM64]
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON('["self-hosted", "Linux", "ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 60
     steps:
       - name: Checkout code
@@ -56,7 +56,7 @@ jobs:
           args: --allow-parallel-runners
 
   test:
-    runs-on: [self-hosted, Linux, ARM64]
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON('["self-hosted", "Linux", "ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 60
     needs: lint
     steps:
