@@ -31,10 +31,14 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners (GitHub.com only)
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
-    # Pushes and same-repo PRs use the Mac Studio Linux VM runners; fork PRs
+    # Pushes and same-repo PRs use ephemeral ARC runners; fork PRs
     # stay on GitHub-hosted runners so outside code never reaches the Mac.
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON('["self-hosted", "Linux", "ARM64"]') || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-latest' }}
     timeout-minutes: 60
+    env:
+      GOFLAGS: -p=1
+      GOMAXPROCS: '1'
+      GOMEMLIMIT: 1400MiB
     permissions:
       # required for all workflows
       security-events: write
@@ -98,6 +102,9 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
+        # 2048 MB is the supported minimum; smaller values round up.
+        ram: 2048
+        threads: 1
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         # If you wish to specify custom queries, you can do so here or in a config file.
