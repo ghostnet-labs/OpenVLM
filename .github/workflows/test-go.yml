@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   lint:
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     # Bound Go compiler and test fan-out to the one-CPU, 2 GiB ARC pilot.
     env:
@@ -59,7 +59,7 @@ jobs:
           args: --allow-parallel-runners
 
   test:
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     # Bound Go compiler and test fan-out to the one-CPU, 2 GiB ARC pilot.
     env:
