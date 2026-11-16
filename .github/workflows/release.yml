@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: "Release"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions: write-all
     container:
       image: goreleaser/goreleaser-cross:v1.26.2-3-v2.15.4

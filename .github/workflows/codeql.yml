@@ -33,7 +33,7 @@ jobs:
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     # Pushes and same-repo PRs use ephemeral ARC runners; fork PRs
     # stay on GitHub-hosted runners so outside code never reaches the Mac.
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-latest' }}
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && 'ghostnet-linux-arm64' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     env:
       GOFLAGS: -p=1
